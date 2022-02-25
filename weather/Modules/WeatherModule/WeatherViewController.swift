@@ -7,7 +7,16 @@
 
 import UIKit
 import Framezilla
-class ViewController: UIViewController {
+
+
+protocol WeatherViewOutput {
+    func showText()
+}
+
+
+class WeatherViewController: UIViewController {
+    
+    private let output: WeatherViewOutput
     
     let cloudImage = UIImage(named: "Image")
     
@@ -174,7 +183,14 @@ class ViewController: UIViewController {
     }()
     
     
+    init(output: WeatherViewOutput) {
+        self.output = output
+        super.init(nibName: nil, bundle: nil)
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     

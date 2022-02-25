@@ -11,6 +11,7 @@ import  UIKit
 class MainCoordinator: BaseCoordinator <UINavigationController> {
   
     let window: UIWindow
+    let weatherModule = WeatherModule()
     
     init(window: UIWindow) {
         self.window = window
@@ -21,8 +22,8 @@ class MainCoordinator: BaseCoordinator <UINavigationController> {
     }
     
     override func start() {
-        let viewController = ViewController()
+       
 //        viewController.delegate = self
-        rootViewController.pushViewController(viewController, animated: true)
+        rootViewController.pushViewController(weatherModule.viewController, animated: true)
     }
 }
