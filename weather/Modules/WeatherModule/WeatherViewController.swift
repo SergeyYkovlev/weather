@@ -7,15 +7,18 @@
 
 import UIKit
 import Framezilla
+import CoreLocation
 
 
 protocol WeatherViewOutput {
-    func showText()
+    func updateWeatherInfo(latitude: Double, longtitude: Double)
 }
 
 
 class WeatherViewController: UIViewController {
     
+    var weatherData = WeatherData()
+    let locationManager = CLLocationManager()
     private let output: WeatherViewOutput
     
     let cloudImage = UIImage(named: "Image")
@@ -26,7 +29,7 @@ class WeatherViewController: UIViewController {
         return view
     }()
     
-    private lazy var cityLabel: UILabel = {
+    private(set) lazy var cityLabel: UILabel = {
         let label = UILabel()
 //        label.backgroundColor = UIColor(red: 114 / 255.0, green: 144 / 255.0, blue: 185 / 255.0, alpha: 1)
 //        label.backgroundColor = UIColor.systemPurple
@@ -67,26 +70,26 @@ class WeatherViewController: UIViewController {
         return view
     }()
     
-    private lazy var infoWeatherImageView: UIImageView = {
+    private(set) lazy var infoWeatherImageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "Image")
         return view
     }()
     
-    private lazy var infoWeatherDegreesLabel: UILabel = {
+    private(set) lazy var infoWeatherDegreesLabel: UILabel = {
         let label = UILabel()
         label.text = "14"
         label.textColor = .white
 //        label.backgroundColor = .systemYellow
-        label.font = UIFont.systemFont(ofSize: 70)
+        label.font = UIFont.systemFont(ofSize: 35 )
         return label
     }()
     
-    private lazy var indoWeatherPrecipitationLabel: UILabel = {
+    private(set) lazy var indoWeatherPrecipitationLabel: UILabel = {
        let label = UILabel()
         label.text = "Дождь"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 40)
+        label.font = UIFont.systemFont(ofSize: 20)
 //        label.backgroundColor = .systemYellow
         return label
     }()
@@ -100,10 +103,10 @@ class WeatherViewController: UIViewController {
         return label
     }()
     
-    private lazy var windLablel: UILabel = {
+    private(set) lazy var windLablel: UILabel = {
         let label = UILabel()
         label.text = "sgdfsgsd"
-        label.font = UIFont.systemFont(ofSize: 23)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
 //        label.backgroundColor = .systemPurple
         return label
@@ -118,11 +121,11 @@ class WeatherViewController: UIViewController {
         return label
     }()
     
-    private lazy var humidityLabel: UILabel = {
+    private(set) lazy var humidityLabel: UILabel = {
        let label = UILabel()
         label.text = "sgfdsgsgs"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 23)
+        label.font = UIFont.systemFont(ofSize: 12)
 //        label.backgroundColor = .systemPurple
         return label
     }()
@@ -136,11 +139,11 @@ class WeatherViewController: UIViewController {
         return label
     }()
     
-    private lazy var pressureLabel: UILabel = {
+    private(set) lazy var pressureLabel: UILabel = {
        let label = UILabel()
         label.text = "dgfghdfgh"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 23)
+        label.font = UIFont.systemFont(ofSize: 12)
 //        label.backgroundColor = .systemPurple
         return label
         
@@ -160,12 +163,12 @@ class WeatherViewController: UIViewController {
        let label = UILabel()
         label.text = "gsgsdgsfs"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 23)
+        label.font = UIFont.systemFont(ofSize: 12)
 //        label.backgroundColor = .systemPurple
         return label
     }()
     
-    private lazy var temperatureUnitsSegmentedControl: UISegmentedControl  = {
+    private(set) lazy var temperatureUnitsSegmentedControl: UISegmentedControl  = {
         var segmentedControl = UISegmentedControl(items: ["C","F"])
         segmentedControl.backgroundColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha: 0.2)
         segmentedControl.selectedSegmentTintColor = .systemGray4.withAlphaComponent(0.6)
@@ -173,6 +176,7 @@ class WeatherViewController: UIViewController {
         segmentedControl.layer.borderColor = UIColor.red.cgColor
         segmentedControl.tintColor = .yellow
         segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentControl(_:)), for: .valueChanged)
 //        segmentControl.borderColor = .clear
 //          segmentControl.selectedLabelColor = .red
 //          segmentControl.unselectedLabelColor = .red
@@ -182,20 +186,25 @@ class WeatherViewController: UIViewController {
         
     }()
     
+//    var state: WeatherState
+//    init(state: WeatherState) {
+//        self.state = state
+//    }
+    
+    
     
     init(output: WeatherViewOutput) {
         self.output = output
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         view.backgroundColor = .white
         view.addSubview(firstView)
@@ -215,6 +224,9 @@ class WeatherViewController: UIViewController {
         firstView.addSubview(headingChanceOfRainLabel)
         firstView.addSubview(chanceOfRainLabel)
         firstView.addSubview(temperatureUnitsSegmentedControl)
+        
+        startLocationManager()
+        
     }
 
     override func viewDidLayoutSubviews() {
@@ -298,5 +310,37 @@ class WeatherViewController: UIViewController {
                 .height(20)
         }
         
+    }
+    
+   
+    
+    func startLocationManager() {
+        locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    @objc func segmentControl(_ segmentedControl: UISegmentedControl) {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            infoWeatherDegreesLabel.text = "\(Int(weatherData.main.temp))"
+        }else {
+            let a = weatherData.main.temp
+            let b = Int(( a * 9/5) + 32)
+                       infoWeatherDegreesLabel.text = String(b)
+        }
+    }
+}
+
+extension WeatherViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let lastlocation = locations.last {
+            output.updateWeatherInfo(latitude: lastlocation.coordinate.latitude, longtitude: lastlocation.coordinate.longitude)
+            print(lastlocation.coordinate.latitude, lastlocation.coordinate.longitude)
+        }
     }
 }
