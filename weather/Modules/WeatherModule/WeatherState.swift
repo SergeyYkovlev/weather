@@ -10,7 +10,8 @@ import CoreLocation
 
 final class WeatherState {
   
-    
+    var str: String = ""
+    var stro: String = ""
     
 }
 
@@ -42,7 +43,7 @@ struct WeatherData: Codable {
         
     switch degrees {
     
-    case 346.0...360.0, 0.10...15.50 :
+    case 346.0...360.0, 0...15.0 :
             return "северный"
         
     case 16.0...75.0 :

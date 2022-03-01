@@ -12,11 +12,16 @@ import CoreLocation
 
 protocol WeatherViewOutput {
     func updateWeatherInfo(latitude: Double, longtitude: Double)
+    func openCityViewController()
+    func conversion()
 }
 
 
+
+
+
 class WeatherViewController: UIViewController {
-    
+        
     var weatherData = WeatherData()
     let locationManager = CLLocationManager()
     private let output: WeatherViewOutput
@@ -49,6 +54,7 @@ class WeatherViewController: UIViewController {
         attText.font = UIFont.systemFont(ofSize: 12)
         button.configuration?.attributedTitle = attText
         button.tintColor = .white
+        button.addTarget(self, action: #selector(actionOpenCity), for: .touchUpInside)
         return button
     }()
     
@@ -172,7 +178,7 @@ class WeatherViewController: UIViewController {
         var segmentedControl = UISegmentedControl(items: ["C","F"])
         segmentedControl.backgroundColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha: 0.2)
         segmentedControl.selectedSegmentTintColor = .systemGray4.withAlphaComponent(0.6)
-        segmentedControl.setTitle("B", forSegmentAt: 0)
+//        segmentedControl.setTitle("B", forSegmentAt: 0)
         segmentedControl.layer.borderColor = UIColor.red.cgColor
         segmentedControl.tintColor = .yellow
         segmentedControl.selectedSegmentIndex = 0
@@ -237,7 +243,7 @@ class WeatherViewController: UIViewController {
         }
         
         cityLabel.configureFrame { maker in
-           maker.top(inset: 85).left(inset: 30).width(90).height(40)
+           maker.top(inset: 85).left(inset: 30).width(170).height(40)
         }
         
         changeСityButton.configureFrame { maker in
@@ -326,15 +332,14 @@ class WeatherViewController: UIViewController {
     }
     
     @objc func segmentControl(_ segmentedControl: UISegmentedControl) {
-        if segmentedControl.selectedSegmentIndex == 0 {
-            infoWeatherDegreesLabel.text = "\(Int(weatherData.main.temp))"
-        }else {
-            let a = weatherData.main.temp
-            let b = Int(( a * 9/5) + 32)
-                       infoWeatherDegreesLabel.text = String(b)
-        }
+        output.conversion()        
+    }
+    
+    @objc func actionOpenCity() {
+        output.openCityViewController()
     }
 }
+
 
 extension WeatherViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

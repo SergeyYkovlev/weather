@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class CityPresenter {
-    var vityData = CityData()
     
     weak var view: CityViewController?
     weak var output: CityModuleOutput?
@@ -21,5 +20,11 @@ final class CityPresenter {
 }
 
 extension CityPresenter: CityViewOutput {
+    
+    func openWeatherViewController(index: Int) {
+        state.cityData.cityLat[index]
+        state.cityData.cityLon[index]
+        output?.CityModuleWeatherViewController(lon: state.cityData.cityLat[index], lat: state.cityData.cityLon[index]  )
+    }
     
 }

@@ -11,7 +11,7 @@ protocol CityModuleInput: AnyObject {
 }
 
 protocol CityModuleOutput: AnyObject {
-    
+    func CityModuleWeatherViewController(lon: String, lat: String)
 }
 
 final class CityModule {

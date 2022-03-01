@@ -24,6 +24,7 @@
 		0C9FAF6327CCAEC800FA60C3 /* CityPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9FAF6227CCAEC800FA60C3 /* CityPresenter.swift */; };
 		0C9FAF6527CCAED900FA60C3 /* CityModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9FAF6427CCAED900FA60C3 /* CityModule.swift */; };
 		0C9FAF6727CCAEFA00FA60C3 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9FAF6627CCAEFA00FA60C3 /* CityViewController.swift */; };
+		0C9FAF6F27CDD72100FA60C3 /* CityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9FAF6E27CDD72000FA60C3 /* CityTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,6 +60,7 @@
 		0C9FAF6227CCAEC800FA60C3 /* CityPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityPresenter.swift; sourceTree = "<group>"; };
 		0C9FAF6427CCAED900FA60C3 /* CityModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityModule.swift; sourceTree = "<group>"; };
 		0C9FAF6627CCAEFA00FA60C3 /* CityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityViewController.swift; sourceTree = "<group>"; };
+		0C9FAF6E27CDD72000FA60C3 /* CityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				0C9FAF6427CCAED900FA60C3 /* CityModule.swift */,
 				0C9FAF6227CCAEC800FA60C3 /* CityPresenter.swift */,
 				0C9FAF6627CCAEFA00FA60C3 /* CityViewController.swift */,
+				0C9FAF6E27CDD72000FA60C3 /* CityTableViewCell.swift */,
 			);
 			path = CityModule;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				0C9FAF5E27C8B40000FA60C3 /* DataSource.swift in Sources */,
 				0C9FAEF827BF72E900FA60C3 /* AppDelegate.swift in Sources */,
 				0C9FAF2127C4A57800FA60C3 /* WeatherPresenter.swift in Sources */,
+				0C9FAF6F27CDD72100FA60C3 /* CityTableViewCell.swift in Sources */,
 				0C9FAF1927BF992400FA60C3 /* MainCoordinator.swift in Sources */,
 				0C9FAF5A27C4E6E500FA60C3 /* WeatherState.swift in Sources */,
 				0C9FAEFA27BF72E900FA60C3 /* SceneDelegate.swift in Sources */,

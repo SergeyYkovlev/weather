@@ -7,14 +7,21 @@
 import Foundation
 
 protocol WeatherModuleInput: AnyObject {
-
+    var state: WeatherState { get }
+    
+    func update()
 }
 
 protocol WeatherModuleOutput: AnyObject {
-    
+    func weatherModuleCityOpenViewController()
 }
 
 final class WeatherModule {
+    
+    var input: WeatherModuleInput {
+        return presenter
+    }
+
     var output: WeatherModuleOutput? {
         get {
             return presenter.output
